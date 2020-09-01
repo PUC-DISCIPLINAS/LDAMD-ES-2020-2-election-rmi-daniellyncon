@@ -14,7 +14,8 @@ public class VoteManager extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {
+		int tries = 10;
+		for (int i = 1; i <= tries ; i++) {
 
 			try {
 				Registry registry = LocateRegistry.getRegistry("localhost");
@@ -32,7 +33,7 @@ public class VoteManager extends Thread {
 
 			} catch (RemoteException | NotBoundException e) {
 				try {
-					sleep(5000);
+					sleep(3000);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
