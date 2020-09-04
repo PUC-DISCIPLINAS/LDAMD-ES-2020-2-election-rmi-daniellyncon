@@ -30,10 +30,6 @@ java ElectionServer
 java ElectionClient
 ```
 
-## Help
-
-Some refactor is needed 
-
 ## Authors
 
 Daniel Lyncon Gonçalves de Souza 
