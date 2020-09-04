@@ -1,3 +1,5 @@
+package src;
+
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
