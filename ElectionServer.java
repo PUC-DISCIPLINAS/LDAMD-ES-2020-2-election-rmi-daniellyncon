@@ -4,10 +4,10 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class ElectionServer {    
     public static void main(String args[]) {
-
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager()); 
-        }
+        
+        // if (System.getSecurityManager() == null) {
+        //     System.setSecurityManager(new SecurityManager()); 
+        // }
 
         try {
             

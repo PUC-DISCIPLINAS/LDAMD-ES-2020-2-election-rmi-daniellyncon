@@ -7,7 +7,8 @@ public class Candidate extends UnicastRemoteObject {
     public int votes;
 
     public Candidate (String name) throws RemoteException{
-        this.candidateName = name;
+        setCandidateName(name);
+        this.votes = 0;
     }    
 
     public void addVote () {
@@ -18,8 +19,10 @@ public class Candidate extends UnicastRemoteObject {
         return this.candidateName;
     }
 
-	public void showResults(int totalVotes) {
-        System.out.println(this.candidateName + "\t" + (float)this.votes/totalVotes*100 + "%");
-	}
+    public void setCandidateName(String name) {
+        this.candidateName = name;
+    }
+
+	
 
 }

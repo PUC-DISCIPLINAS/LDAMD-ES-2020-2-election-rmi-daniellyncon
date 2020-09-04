@@ -1,8 +1,9 @@
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 public class ElectionServant implements ElectionInterface, Serializable {
 
@@ -10,23 +11,21 @@ public class ElectionServant implements ElectionInterface, Serializable {
      *
      */
     private static final long serialVersionUID = 1L;
-    private int totalVotes;
-    private Vector<Candidate> candidates;
+    private CandidateDao candidates;
     private Map<String, Candidate> voting;
     
 
     public ElectionServant() throws RemoteException {
-        this.totalVotes = 0;
-        this.candidates = new Vector<>();
+        this.candidates = new CandidateDao();
         this.voting = new HashMap<>();
-        addCandidates();
+        
     }
 
     @Override
     public synchronized boolean vote(String candidateName, String voterName) { 
         boolean foundCandidate = false;
         Candidate candidate = null;
-        for(Candidate c : this.candidates) {
+        for(Candidate c : this.candidates.getAll()) {
             if(c.getCandidateName().equals(candidateName)){
                 foundCandidate = true;
                 candidate = c;
@@ -35,31 +34,28 @@ public class ElectionServant implements ElectionInterface, Serializable {
         }
         if (!voting.containsKey(HashMD5.generateHString(voterName)) && foundCandidate) {
             candidate.addVote();
-            this.totalVotes++;
+            FileSerialization.saveToFile(candidates.getAll());
             return true;
         }
         return false;
     }
 
     @Override
-    public synchronized void result() throws RemoteException {
+    public synchronized Map<String, Integer> result() throws RemoteException {
         System.out.println("Candidate name \t votes");
-        for (Candidate c : this.candidates) {
-            c.showResults(totalVotes);
+        Map<String, Integer> results = new HashMap<>();
+        for (Candidate c : this.candidates.getAll()) {
+            results.put(c.candidateName, c.votes);
         }
-    }
-
-    public void addCandidates() throws RemoteException {
-        this.candidates.add(new Candidate("Bonoro"));
-        this.candidates.add(new Candidate("Molusco"));
+        return results;
     }
 
     @Override
-    public void candidatesList() throws RemoteException {
-        System.out.println("Candidates:");
-        for (Candidate c : this.candidates) {
-            System.out.println(c.getCandidateName());
+    public List<String> candidatesList() throws RemoteException {
+        List<String> candidateNames = new ArrayList<>();
+        for (Candidate c : this.candidates.getAll()) {
+            candidateNames.add(c.getCandidateName());
         }
-
+        return candidateNames;
     }
 }

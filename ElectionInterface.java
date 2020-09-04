@@ -1,10 +1,12 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Map;
+import java.util.List;
 
 public interface ElectionInterface extends Remote {
 
-    void candidatesList() throws RemoteException;
+    List<String> candidatesList() throws RemoteException;
     boolean vote(String candidate, String voterName) throws RemoteException;
-    void result() throws RemoteException;
+    Map<String, Integer> result() throws RemoteException;
 
 }
